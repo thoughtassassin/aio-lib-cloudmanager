@@ -1147,6 +1147,21 @@ class CloudManagerAPI {
       throw e
     })
   }
+
+  /**
+   * Prototype CLI methods
+   *
+   * @param {string} programId - the program id
+   * @param {string} environmentId - the environment id
+   * @param {string} cliId - the command id
+   * @returns {Promise<object>} a truthy value
+   */
+  async getCLICommand (programId, environmentId, cliId) {
+    const mockBaseURL = 'http://localhost:8080/proxy/https/cm-dev.adobe.io/api'
+    const resourcePath = `/program/${programId}/environment/${environmentId}/runtime/commerce/cli/${cliId}`;
+    const response = await fetch(mockBaseURL + resourcePath)
+    return await response.json()
+  }
 }
 
 module.exports = {
