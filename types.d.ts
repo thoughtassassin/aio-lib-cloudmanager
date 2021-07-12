@@ -272,6 +272,23 @@ declare class CloudManagerAPI {
      * @returns a truthy value
      */
     removeIpAllowlistBinding(programId: string, ipAllowlistId: string, environmentId: string, service: string): Promise<object>;
+    /**
+     * Prototype GET CLI methods
+     * @param programId - the program id
+     * @param environmentId - the environment id
+     * @param cliId - the command id
+     * @returns a truthy value
+     */
+    getCLICommand(programId: string, environmentId: string, cliId: string): Promise<CommerceCLICommandStatus>;
+    /**
+     * Prototype POST CLI methods
+     * @param programId - the program id
+     * @param environmentId - the environment id
+     * @param command - the command
+     * @param options - the command
+     * @returns a truthy value
+     */
+    postCLICommand(programId: string, environmentId: string, command: string, options: string[]): Promise<CommerceCLICommandStatus>;
 }
 
 /**
@@ -437,13 +454,17 @@ declare type Environment = {
 /**
  * A named value than can be set on an Environment or Pipeline
  * @property name - Name of the variable. Of a-z, A-Z, _ and 0-9 Cannot begin with a number.
- * @property value - Value of the variable. Read-Write for non-secrets, write-only for secrets.
+ * @property value - Value of the variable. Read-Write for non-secrets, write-only for secrets. The length of `secretString` values must be less than 500 characters. An empty value causes a variable to be deleted.
  * @property type - Type of the variable. Default `string` if missing. `secretString` variables are encrypted at rest. The type of a variable be changed after creation; the variable must be deleted and recreated.
+ * @property service - Service of the variable. When not provided, the variable applies to all services. Currently the values 'author', 'publish', and 'preview' are supported. Note - this value is case-sensitive.
+ * @property status - Status of the variable
  */
 declare type Variable = {
     name: string;
     value: string;
     type: string;
+    service: string;
+    status: string;
 };
 
 /**
@@ -513,5 +534,28 @@ declare type DownloadedLog = {
 declare type PipelineUpdate = {
     branch: string;
     repositoryId: string;
+};
+
+/**
+ * @property id - the id of the command
+ * @property status - the status of the command
+ * @property type - the type of command
+ * @property command - the command
+ * @property message - a status message about the command
+ * @property options - options passed to the command
+ * @property startedAt - started time
+ * @property completedAt - completed time
+ * @property startedBy - user initiating the command
+ */
+declare type CommerceCLICommandStatus = {
+    id: string;
+    status: string;
+    type: string;
+    command: string;
+    message: string;
+    options: string;
+    startedAt: string;
+    completedAt: string;
+    startedBy: string;
 };
 

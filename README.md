@@ -127,6 +127,8 @@ with valid values for tenantId, apiKey and accessToken</p>
 <dd></dd>
 <dt><a href="#PipelineUpdate">PipelineUpdate</a> : <code>object</code></dt>
 <dd></dd>
+<dt><a href="#CommerceCLICommandStatus">CommerceCLICommandStatus</a> : <code>object</code></dt>
+<dd></dd>
 </dl>
 
 <a name="CloudManagerAPI"></a>
@@ -173,6 +175,8 @@ with valid values for tenantId, apiKey and accessToken
     * [.deleteIpAllowlist(programId, ipAllowlistId)](#CloudManagerAPI+deleteIpAllowlist) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.addIpAllowlistBinding(programId, ipAllowlistId, environmentId, service)](#CloudManagerAPI+addIpAllowlistBinding) ⇒ <code>Promise.&lt;object&gt;</code>
     * [.removeIpAllowlistBinding(programId, ipAllowlistId, environmentId, service)](#CloudManagerAPI+removeIpAllowlistBinding) ⇒ <code>Promise.&lt;object&gt;</code>
+    * [.getCLICommand(programId, environmentId, cliId)](#CloudManagerAPI+getCLICommand) ⇒ [<code>Promise.&lt;CommerceCLICommandStatus&gt;</code>](#CommerceCLICommandStatus)
+    * [.postCLICommand(programId, environmentId, command, options)](#CloudManagerAPI+postCLICommand) ⇒ [<code>Promise.&lt;CommerceCLICommandStatus&gt;</code>](#CommerceCLICommandStatus)
 
 <a name="CloudManagerAPI+orgId"></a>
 
@@ -604,6 +608,35 @@ Unbind an IP Allow List from an environment
 | environmentId | <code>string</code> | the environment id |
 | service | <code>string</code> | the service name |
 
+<a name="CloudManagerAPI+getCLICommand"></a>
+
+### cloudManagerAPI.getCLICommand(programId, environmentId, cliId) ⇒ [<code>Promise.&lt;CommerceCLICommandStatus&gt;</code>](#CommerceCLICommandStatus)
+Prototype GET CLI methods
+
+**Kind**: instance method of [<code>CloudManagerAPI</code>](#CloudManagerAPI)  
+**Returns**: [<code>Promise.&lt;CommerceCLICommandStatus&gt;</code>](#CommerceCLICommandStatus) - a truthy value  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| programId | <code>string</code> | the program id |
+| environmentId | <code>string</code> | the environment id |
+| cliId | <code>string</code> | the command id |
+
+<a name="CloudManagerAPI+postCLICommand"></a>
+
+### cloudManagerAPI.postCLICommand(programId, environmentId, command, options) ⇒ [<code>Promise.&lt;CommerceCLICommandStatus&gt;</code>](#CommerceCLICommandStatus)
+Prototype POST CLI methods
+
+**Kind**: instance method of [<code>CloudManagerAPI</code>](#CloudManagerAPI)  
+**Returns**: [<code>Promise.&lt;CommerceCLICommandStatus&gt;</code>](#CommerceCLICommandStatus) - a truthy value  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| programId | <code>string</code> | the program id |
+| environmentId | <code>string</code> | the environment id |
+| command | <code>string</code> | the command |
+| options | <code>Array.&lt;string&gt;</code> | the command |
+
 <a name="getCurrentStep"></a>
 
 ## getCurrentStep(execution) ⇒ [<code>PipelineExecutionStepState</code>](#PipelineExecutionStepState)
@@ -797,9 +830,10 @@ A named value than can be set on an Environment or Pipeline
 | Name | Type | Description |
 | --- | --- | --- |
 | name | <code>string</code> | Name of the variable. Of a-z, A-Z, _ and 0-9 Cannot begin with a number. |
-| value | <code>string</code> | Value of the variable. Read-Write for non-secrets, write-only for secrets. The length of `secretString` values must be less than 500 characters. |
+| value | <code>string</code> | Value of the variable. Read-Write for non-secrets, write-only for secrets. The length of `secretString` values must be less than 500 characters. An empty value causes a variable to be deleted. |
 | type | <code>string</code> | Type of the variable. Default `string` if missing. `secretString` variables are encrypted at rest. The type of a variable be changed after creation; the variable must be deleted and recreated. |
-| service | <code>string</code> | Service of the variable. When not provided, the variable applies to all services. Currently only the values 'author' and 'publish' are supported. Note - this value is case-sensitive. |
+| service | <code>string</code> | Service of the variable. When not provided, the variable applies to all services. Currently the values 'author', 'publish', and 'preview' are supported. Note - this value is case-sensitive. |
+| status | <code>string</code> | Status of the variable |
 
 <a name="LogOptionRepresentation"></a>
 
@@ -878,6 +912,24 @@ Options to the listPipeline function
 | --- | --- | --- |
 | branch | <code>string</code> | the new branch |
 | repositoryId | <code>string</code> | the new repository id |
+
+<a name="CommerceCLICommandStatus"></a>
+
+## CommerceCLICommandStatus : <code>object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | the id of the command |
+| status | <code>string</code> | the status of the command |
+| type | <code>string</code> | the type of command |
+| command | <code>string</code> | the command |
+| message | <code>string</code> | a status message about the command |
+| options | <code>string</code> | options passed to the command |
+| startedAt | <code>string</code> | started time |
+| completedAt | <code>string</code> | completed time |
+| startedBy | <code>string</code> | user initiating the command |
 
 ### Debug Logs
 

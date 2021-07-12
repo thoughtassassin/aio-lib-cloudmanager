@@ -1149,17 +1149,36 @@ class CloudManagerAPI {
   }
 
   /**
-   * Prototype CLI methods
+   * Prototype GET CLI methods
    *
    * @param {string} programId - the program id
    * @param {string} environmentId - the environment id
    * @param {string} cliId - the command id
-   * @returns {Promise<object>} a truthy value
+   * @returns {Promise<CommerceCLICommandStatus>} a truthy value
    */
   async getCLICommand (programId, environmentId, cliId) {
     const mockBaseURL = 'http://localhost:8080/proxy/https/cm-dev.adobe.io/api'
     const resourcePath = `/program/${programId}/environment/${environmentId}/runtime/commerce/cli/${cliId}`;
+    console.log(mockBaseURL + resourcePath)
+    // const mockBaseURL = 'http://localhost:3001'
+    // const resourcePath = '/get'
     const response = await fetch(mockBaseURL + resourcePath)
+    return await response.json()
+  }
+
+  /**
+   * Prototype POST CLI methods
+   *
+   * @param {string} programId - the program id
+   * @param {string} environmentId - the environment id
+   * @param {string} command - the command
+   * @param {string[]} options - the command
+   * @returns {Promise<CommerceCLICommandStatus>} a truthy value
+   */
+  async postCLICommand (programId, environmentId, command, options) {
+    const mockBaseURL = 'http://localhost:3001'
+    const resourcePath = '/post'
+    const response = await fetch(mockBaseURL + resourcePath, { method: 'POST' })
     return await response.json()
   }
 }

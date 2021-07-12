@@ -27,3 +27,16 @@ governing permissions and limitations under the License.
  * @property {string} branch - the new branch
  * @property {string} repositoryId - the new repository id
  */
+
+/**
+ * @typedef {object} CommerceCLICommandStatus
+ * @property {string} id - the id of the command
+ * @property {string} status - the status of the command
+ * @property {string} type - the type of command
+ * @property {string} command - the command
+ * @property {string} message - a status message about the command
+ * @property {string} options - options passed to the command
+ * @property {string} startedAt - started time
+ * @property {string} completedAt - completed time
+ * @property {string} startedBy - user initiating the command
+ */
